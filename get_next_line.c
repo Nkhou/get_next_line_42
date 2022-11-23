@@ -124,7 +124,3 @@ char	*get_next_line(int fd)
 	str = ft_get_rest(str);
 	return (line);
 }
-// int main()
-// {
-// 	int fd = open("test.txt", )
-// }
