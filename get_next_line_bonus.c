@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkhoudro <nkhoudro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/20 18:59:46 by nkhoudro          #+#    #+#             */
-/*   Updated: 2022/11/22 22:35:41 by nkhoudro         ###   ########.fr       */
+/*   Created: 2022/11/22 22:37:06 by nkhoudro          #+#    #+#             */
+/*   Updated: 2022/11/22 22:37:15 by nkhoudro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_strdup( char *s1)
 {
@@ -46,10 +46,10 @@ static char	*ft_read_line(int fd, char *str)
 		nb = read(fd, buff, BUFFER_SIZE);
 		if (nb == -1)
 			return (free(buff), free(str), NULL);
-		if (!str)
-			return (free(buff), free(str), NULL);
 		buff[nb] = '\0';
 		str = ft_strjoin(str, buff);
+		if (!str)
+			return (free(buff), free(str), NULL);
 	}
 	return (free(buff), str);
 }
@@ -95,7 +95,7 @@ static char	*ft_get_rest(char *line)
 		i++;
 	str = (char *) malloc(sizeof(char) * (ft_strlen(line) - i + 1));
 	if (!str)
-		return (free(line), free(str), NULL);
+		return (free(line), NULL);
 	if (line[i] == '\n')
 		i++;
 	while (line[i])
@@ -110,21 +110,17 @@ static char	*ft_get_rest(char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*str;
+	static char	*str[OPEN_MAX];
 	char		*line;
 
 	if (fd < 0)
 		return (NULL);
 	if (BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
-		return (free(str), str = NULL);
-	str = ft_read_line(fd, str);
-	if (!str)
+		return (free(str[fd]), str[fd] = NULL);
+	str[fd] = ft_read_line(fd, str[fd]);
+	if (!str[fd])
 		return (NULL);
-	line = ft_get_to_back(str);
-	str = ft_get_rest(str);
+	line = ft_get_to_back(str[fd]);
+	str[fd] = ft_get_rest(str[fd]);
 	return (line);
 }
-// int main()
-// {
-// 	int fd = open("test.txt", )
-// }
