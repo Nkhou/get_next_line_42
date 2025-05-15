@@ -34,6 +34,6 @@ Resource management (no memory leaks)
 
 📚 Further Reading
 
-File I/O in C
-Static Variables in C
-Memory Management in C
+- File I/O in C
+- Static Variables in C
+- Memory Management in C
